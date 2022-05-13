@@ -10,7 +10,7 @@ def minimax_vs_random():
     screen = pygame.display.set_mode((WIDTH, HEIGHT))
     board = chess.Board()
     player1 = minimax_agent.MinimaxPlayer(PLAYER)
-    player2 = minimax_agent.MinimaxPlayer(not PLAYER)
+    player2 = random_agent.RandomPlayer()
     drawboard(screen)
     loadImage()
     while 1:
