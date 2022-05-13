@@ -45,11 +45,21 @@ def human_vs_minimax():
     first_square = None
     second_square = None
 
+    src_square = dest_square = -1
+
     while 1:
         drawpiece(screen, convert_to_int(board))
-        
+        last_move = None
         if board.turn == HUMAN_TURN:
             for event in pygame.event.get():
+                if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_u:
+                        if board.move_stack:
+                            board.pop()
+                            board.pop()
+                            last_move = None
+                            src_square = dest_square = -1
+
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     if not first_click:
                         c1 = int(pygame.mouse.get_pos()[0]/SQ_SIZE)
@@ -73,6 +83,7 @@ def human_vs_minimax():
                             for move in list(board.legal_moves):
                                 if move.from_square == first_square and move.to_square == second_square:
                                     board.push(move)
+                                    last_move = move
                                     sleep(0.5)
                                     
             if first_square in list(set(move.from_square for move in list(board.legal_moves))):
@@ -83,7 +94,15 @@ def human_vs_minimax():
         else:
             move = mimimax_player.get_move(board, 2)
             board.push(move)
+            last_move = move
+
+        if last_move:
+            src_square = last_move.from_square
+            dest_square = last_move.to_square
         
+        screen.blit(selectedIcon, ((src_square%8) * SQ_SIZE, (7-(src_square//8)) * SQ_SIZE))
+        screen.blit(selectedIcon, ((dest_square%8) * SQ_SIZE, (7-(dest_square//8)) * SQ_SIZE))
+
         pygame.display.flip()
         
 
