@@ -5,36 +5,53 @@ import minimax_agent
 import random_agent
 
 def minimax_vs_random():
+    MINIMAX_PLAYER = False
+
     pygame.init()
-    PLAYER = False
     screen = pygame.display.set_mode((WIDTH, HEIGHT))
     board = chess.Board()
-    player1 = minimax_agent.MinimaxPlayer(PLAYER)
+
+    player1 = minimax_agent.MinimaxPlayer(MINIMAX_PLAYER)
     player2 = random_agent.RandomPlayer()
-    drawboard(screen)
-    loadImage()
+    
+    draw_board(screen)
+    load_image()
+    black_win = pygame.transform.scale(pygame.image.load("images/bK.png"), (256, 256))
+    white_win = pygame.transform.scale(pygame.image.load("images/wK.png"), (256, 256))
     while 1:
+        draw_piece(screen, convert_to_int(board))
+
         if not board.is_game_over():
             if board.turn == player1.player:
                 move = player1.get_move(board, 2)
                 board.push(move)
             else:
-                move = player2.get_move(board, 2)
+                move = player2.get_move(board)
                 board.push(move)
         else:
-            print(board.result())
-        drawpiece(screen, convert_to_int(board))
+            if board.result()[0] == '1':
+                screen.blit(white_win, (128, 128))
+            elif board.result()[0] == '0':
+                screen.blit(black_win, (128, 128))
+            else:
+                screen.blit(white_win, (0, 128))
+                screen.blit(black_win, (256, 128))
+
         pygame.display.flip()
         sleep(1) 
 
 def human_vs_minimax():
-    HUMAN_TURN = True
+    HUMAN_TURN = False
+
     pygame.init()
     screen = pygame.display.set_mode((WIDTH, HEIGHT))
-    drawboard(screen)
-    loadImage()
+    draw_board(screen)
+    load_image()
     board = chess.Board()
-    selectedIcon = pygame.transform.scale(pygame.image.load("images/selected.png"), (SQ_SIZE, SQ_SIZE))
+
+    selected_icon = pygame.transform.scale(pygame.image.load("images/selected.png"), (SQ_SIZE, SQ_SIZE))
+    black_win = pygame.transform.scale(pygame.image.load("images/bK.png"), (256, 256))
+    white_win = pygame.transform.scale(pygame.image.load("images/wK.png"), (256, 256))
 
     mimimax_player = minimax_agent.MinimaxPlayer(not HUMAN_TURN)
 
@@ -47,7 +64,7 @@ def human_vs_minimax():
     src_square = dest_square = -1
 
     while 1:
-        drawpiece(screen, convert_to_int(board))
+        draw_piece(screen, convert_to_int(board))
         last_move = None
         if board.turn == HUMAN_TURN:
             for event in pygame.event.get():
@@ -83,13 +100,12 @@ def human_vs_minimax():
                                 if move.from_square == first_square and move.to_square == second_square:
                                     board.push(move)
                                     last_move = move
-                                    sleep(0.5)
                                     
             if first_square in list(set(move.from_square for move in list(board.legal_moves))):
-                screen.blit(selectedIcon, (c1 * SQ_SIZE, r1 * SQ_SIZE))
+                screen.blit(selected_icon, (c1 * SQ_SIZE, r1 * SQ_SIZE))
                 target_squares = list(set(move.to_square for move in list(board.legal_moves) if move.from_square == first_square))
                 for x in target_squares:
-                    screen.blit(selectedIcon, ((x%8) * SQ_SIZE, (7-(x//8)) * SQ_SIZE))
+                    screen.blit(selected_icon, ((x%8) * SQ_SIZE, (7-(x//8)) * SQ_SIZE))
         else:
             move = mimimax_player.get_move(board, 2)
             board.push(move)
@@ -99,9 +115,19 @@ def human_vs_minimax():
             src_square = last_move.from_square
             dest_square = last_move.to_square
         
-        screen.blit(selectedIcon, ((src_square%8) * SQ_SIZE, (7-(src_square//8)) * SQ_SIZE))
-        screen.blit(selectedIcon, ((dest_square%8) * SQ_SIZE, (7-(dest_square//8)) * SQ_SIZE))
+        screen.blit(selected_icon, ((src_square%8) * SQ_SIZE, (7-(src_square//8)) * SQ_SIZE))
+        screen.blit(selected_icon, ((dest_square%8) * SQ_SIZE, (7-(dest_square//8)) * SQ_SIZE))
+
+        if board.is_game_over():
+            if board.result()[0] == '1':
+                screen.blit(white_win, (128, 128))
+            elif board.result()[0] == '0':
+                screen.blit(black_win, (128, 128))
+            else:
+                screen.blit(white_win, (128, 256))
+                screen.blit(black_win, (128+256, 256))
 
         pygame.display.flip()
-        
+
+#minimax_vs_random()        
 human_vs_minimax()
