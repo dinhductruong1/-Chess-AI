@@ -26,7 +26,6 @@ def minimax_vs_random():
         drawpiece(screen, convert_to_int(board))
         pygame.display.flip()
         sleep(1) 
-#main()
 
 def human_vs_minimax():
     HUMAN_TURN = True
@@ -105,5 +104,4 @@ def human_vs_minimax():
 
         pygame.display.flip()
         
-
 human_vs_minimax()
