@@ -1,17 +1,15 @@
-from time import sleep
-from more_itertools import first
+import chess
 from draw_board import *
 import minimax_agent
 import random_agent
+from time import sleep
 
-def minimax_vs_random():
-    MINIMAX_PLAYER = False
-
+def minimax_vs_random(minimax_chess_color):
     pygame.init()
     screen = pygame.display.set_mode((WIDTH, HEIGHT))
     board = chess.Board()
 
-    player1 = minimax_agent.MinimaxPlayer(MINIMAX_PLAYER)
+    player1 = minimax_agent.MinimaxPlayer(minimax_chess_color)
     player2 = random_agent.RandomPlayer()
     
     draw_board(screen)
@@ -40,8 +38,7 @@ def minimax_vs_random():
         pygame.display.flip()
         sleep(1) 
 
-def human_vs_minimax():
-    HUMAN_TURN = False
+def human_vs_minimax(human_chess_color):
 
     pygame.init()
     screen = pygame.display.set_mode((WIDTH, HEIGHT))
@@ -53,7 +50,7 @@ def human_vs_minimax():
     black_win = pygame.transform.scale(pygame.image.load("images/bK.png"), (256, 256))
     white_win = pygame.transform.scale(pygame.image.load("images/wK.png"), (256, 256))
 
-    mimimax_player = minimax_agent.MinimaxPlayer(not HUMAN_TURN)
+    mimimax_player = minimax_agent.MinimaxPlayer(not human_chess_color)
 
     first_click = False
     second_click = False
@@ -66,7 +63,7 @@ def human_vs_minimax():
     while 1:
         draw_piece(screen, convert_to_int(board))
         last_move = None
-        if board.turn == HUMAN_TURN:
+        if board.turn == human_chess_color:
             for event in pygame.event.get():
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_u:
@@ -129,5 +126,5 @@ def human_vs_minimax():
 
         pygame.display.flip()
 
-#minimax_vs_random()        
-human_vs_minimax()
+#minimax_vs_random(True)    
+human_vs_minimax(True)
