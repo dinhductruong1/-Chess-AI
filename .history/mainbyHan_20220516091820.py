@@ -51,7 +51,7 @@ def human_vs_bot():
     first_square = None
     second_square = None
     src_square = dest_square = -1
-    global bot1
+    global 
     while 1:
         for event in pygame.event.get():
             if(event.type == pygame.QUIT):

@@ -47,11 +47,13 @@ def game_over(key):
 
 def human_vs_bot():
     first_click = False
+    second_click = False
     r1 = c1 = r2 = c2 = 0
     first_square = None
     second_square = None
+
     src_square = dest_square = -1
-    global bot1
+
     while 1:
         for event in pygame.event.get():
             if(event.type == pygame.QUIT):
@@ -82,6 +84,7 @@ def human_vs_bot():
                         c2 = int(pygame.mouse.get_pos()[0]/SQ_SIZE)
                         r2 = int(pygame.mouse.get_pos()[1]/SQ_SIZE)
                         second_square = (7-r2)*8+c2
+                        second_click = True
 
                         target_squares = list(set(move.to_square for move in list(
                             board.legal_moves) if move.from_square == first_square))
@@ -104,10 +107,10 @@ def human_vs_bot():
                     screen.blit(selected_icon, ((x % 8) *
                                 SQ_SIZE, (7-(x//8)) * SQ_SIZE))
         else:
-            if isinstance(bot1, random_agent.RandomPlayer):
-                move = bot1.get_move(board)
+            if isinstance(bot_1, random_agent.RandomPlayer):
+                move = bot_1.get_move(board)
             else:
-                move = bot1.get_move(board, DEPTH)
+                move = bot_1.get_move(board, DEPTH)
             board.push(move)
             last_move = move
 
@@ -142,7 +145,7 @@ def bot_vs_bot():
                 if isinstance(bot1, random_agent.RandomPlayer):
                     move = bot1.get_move(board)
                 else:
-                    move = bot1.get_move(board, DEPTH)
+                    move = bot1.get_move(board, 3)
                 board.push(move)
             else:
                 if isinstance(bot2, random_agent.RandomPlayer):
