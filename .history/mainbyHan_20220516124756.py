@@ -9,7 +9,6 @@ import random_agent
 import middle_agent
 from tkinter import messagebox
 from time import sleep
-promotion_type = 'q'
 
 
 def get_level(option=0, turn=False):
@@ -56,14 +55,13 @@ def human_vs_bot():
     src_square = dest_square = -1
     global bot1
     draw_piece(screen, convert_to_int(board))
-    pygame.display.flip()
     while 1:
         for event in pygame.event.get():
             if(event.type == pygame.QUIT):
                 if messagebox.askokcancel("Thông báo", "Bạn có muốn thoát không?"):
                     pygame.quit()
                     quit()
-        draw_piece(screen, convert_to_int(board))
+        # draw_piece(screen, convert_to_int(board))
         last_move = None
         if board.turn == human_chess_color:
             for event in pygame.event.get():
@@ -97,9 +95,6 @@ def human_vs_bot():
                         else:
                             for move in list(board.legal_moves):
                                 if move.from_square == first_square and move.to_square == second_square:
-                                    if chess.Move.from_uci(str(move)).promotion:
-                                        board.push(move)
-                                        break
                                     board.push(move)
                                     draw_piece(screen, convert_to_int(board))
                                     pygame.display.flip()
@@ -118,6 +113,8 @@ def human_vs_bot():
             else:
                 move = bot1.get_move(board, DEPTH)
             board.push(move)
+            draw_piece(screen, convert_to_int(board))
+            pygame.display.flip()
             last_move = move
 
         if last_move:
@@ -133,8 +130,6 @@ def human_vs_bot():
             draw_piece(screen, convert_to_int(board))
             pygame.display.flip()
             game_over(board.result()[0])
-
-        pygame.display.flip()
 
 
 def bot_vs_bot():

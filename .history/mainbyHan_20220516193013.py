@@ -11,7 +11,6 @@ from tkinter import messagebox
 from time import sleep
 promotion_type = 'q'
 
-
 def get_level(option=0, turn=False):
     options = {0: random_agent.RandomPlayer(turn), 1: middle_agent.MiddleAgent(
         turn), 2: minimax_agent.MinimaxPlayer(turn)}
@@ -97,9 +96,29 @@ def human_vs_bot():
                         else:
                             for move in list(board.legal_moves):
                                 if move.from_square == first_square and move.to_square == second_square:
-                                    if chess.Move.from_uci(str(move)).promotion:
-                                        board.push(move)
-                                        break
+                                    print(move)
+                                    prueba = chess.Move.from_uci(str(move))
+                                    if prueba.promotion is not None:
+                                        #display promotion menu
+                                        menu = pygame_menu.Menu(
+                                            window_title='Promotion',
+                                            window_width=400,
+                                            window_height=300
+                                        )
+                                        menu.add_selector(
+                                            'Promotion',
+                                            [
+                                                pygame_menu.widgets.Option('Queen', promotion_type='q'),
+                                                pygame_menu.widgets.Option('Rook', promotion_type='r'),
+                                                pygame_menu.widgets.Option('Bishop', promotion_type='b'),
+                                                pygame_menu.widgets.Option('Knight', promotion_type='n')
+                                            ],
+                                            onchange=promotion_type
+                                        )
+                                        menu.add_button('OK', None)
+                                        menu.mainloop(
+                                            screen)
+                                        move = chess.Move.from_uci(str(move) + promotion_type)
                                     board.push(move)
                                     draw_piece(screen, convert_to_int(board))
                                     pygame.display.flip()
@@ -259,6 +278,7 @@ menu.add.button('Quit', pygame_menu.events.EXIT)
 def cont():
     board.reset()
     menu.mainloop(surface)
+
 
 
 cont()

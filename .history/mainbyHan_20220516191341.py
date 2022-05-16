@@ -9,7 +9,6 @@ import random_agent
 import middle_agent
 from tkinter import messagebox
 from time import sleep
-promotion_type = 'q'
 
 
 def get_level(option=0, turn=False):
@@ -97,9 +96,16 @@ def human_vs_bot():
                         else:
                             for move in list(board.legal_moves):
                                 if move.from_square == first_square and move.to_square == second_square:
-                                    if chess.Move.from_uci(str(move)).promotion:
-                                        board.push(move)
-                                        break
+                                    prueba = chess.Move.from_uci(move)
+                                    if prueba.promotion is not None:
+                                        if prueba.promotion == chess.QUEEN:
+                                            prueba.promotion = chess.QUEEN
+                                        elif prueba.promotion == chess.ROOK:
+                                            prueba.promotion = chess.ROOK
+                                        elif prueba.promotion == chess.BISHOP:
+                                            prueba.promotion = chess.BISHOP
+                                        elif prueba.promotion == chess.KNIGHT:
+                                            prueba.promotion = chess.KNIGHT
                                     board.push(move)
                                     draw_piece(screen, convert_to_int(board))
                                     pygame.display.flip()

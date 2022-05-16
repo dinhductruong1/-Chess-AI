@@ -9,7 +9,6 @@ import random_agent
 import middle_agent
 from tkinter import messagebox
 from time import sleep
-promotion_type = 'q'
 
 
 def get_level(option=0, turn=False):
@@ -20,7 +19,6 @@ def get_level(option=0, turn=False):
 
 DEPTH = 3
 human_chess_color = chess.WHITE
-is_human = True
 pygame.init()
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 draw_board(screen)
@@ -55,8 +53,6 @@ def human_vs_bot():
     second_square = None
     src_square = dest_square = -1
     global bot1
-    draw_piece(screen, convert_to_int(board))
-    pygame.display.flip()
     while 1:
         for event in pygame.event.get():
             if(event.type == pygame.QUIT):
@@ -97,9 +93,6 @@ def human_vs_bot():
                         else:
                             for move in list(board.legal_moves):
                                 if move.from_square == first_square and move.to_square == second_square:
-                                    if chess.Move.from_uci(str(move)).promotion:
-                                        board.push(move)
-                                        break
                                     board.push(move)
                                     draw_piece(screen, convert_to_int(board))
                                     pygame.display.flip()
@@ -118,6 +111,8 @@ def human_vs_bot():
             else:
                 move = bot1.get_move(board, DEPTH)
             board.push(move)
+            draw_piece(screen, convert_to_int(board))
+            pygame.display.flip()
             last_move = move
 
         if last_move:
@@ -133,8 +128,6 @@ def human_vs_bot():
             draw_piece(screen, convert_to_int(board))
             pygame.display.flip()
             game_over(board.result()[0])
-
-        pygame.display.flip()
 
 
 def bot_vs_bot():
@@ -169,6 +162,7 @@ def bot_vs_bot():
 
 
 surface = create_example_window('Cờ vua', (512, 512))
+is_human = False
 
 
 def set_mode(selected: Tuple, value=0) -> None:

@@ -168,7 +168,7 @@ def bot_vs_bot():
         sleep(0.5)
 
 
-surface = create_example_window('Cờ vua', (512, 512))
+surface = create_example_window('Cờ vua', (512, 512), )
 
 
 def set_mode(selected: Tuple, value=0) -> None:

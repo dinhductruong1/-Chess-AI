@@ -97,10 +97,11 @@ def human_vs_bot():
                         else:
                             for move in list(board.legal_moves):
                                 if move.from_square == first_square and move.to_square == second_square:
-                                    if chess.Move.from_uci(str(move)).promotion:
+                                    
+                                    if chess.Move.from_uci(str(move)).promotion is not None:
+                                        board.push(chess.Move.from_uci(str(move))+'')
+                                    else:
                                         board.push(move)
-                                        break
-                                    board.push(move)
                                     draw_piece(screen, convert_to_int(board))
                                     pygame.display.flip()
                                     last_move = move

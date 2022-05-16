@@ -98,8 +98,7 @@ def human_vs_bot():
                             for move in list(board.legal_moves):
                                 if move.from_square == first_square and move.to_square == second_square:
                                     if chess.Move.from_uci(str(move)).promotion:
-                                        board.push(move)
-                                        break
+                                        board.
                                     board.push(move)
                                     draw_piece(screen, convert_to_int(board))
                                     pygame.display.flip()

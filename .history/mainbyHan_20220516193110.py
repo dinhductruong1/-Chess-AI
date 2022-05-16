@@ -11,7 +11,6 @@ from tkinter import messagebox
 from time import sleep
 promotion_type = 'q'
 
-
 def get_level(option=0, turn=False):
     options = {0: random_agent.RandomPlayer(turn), 1: middle_agent.MiddleAgent(
         turn), 2: minimax_agent.MinimaxPlayer(turn)}
@@ -97,9 +96,11 @@ def human_vs_bot():
                         else:
                             for move in list(board.legal_moves):
                                 if move.from_square == first_square and move.to_square == second_square:
-                                    if chess.Move.from_uci(str(move)).promotion:
-                                        board.push(move)
-                                        break
+                                    print(move)
+                                    prueba = chess.Move.from_uci(str(move))
+                                    if prueba.promotion is not None:
+                                        #display messagebox to selc
+                                        move = chess.Move.from_uci(str(move) + promotion_type)
                                     board.push(move)
                                     draw_piece(screen, convert_to_int(board))
                                     pygame.display.flip()
@@ -259,6 +260,7 @@ menu.add.button('Quit', pygame_menu.events.EXIT)
 def cont():
     board.reset()
     menu.mainloop(surface)
+
 
 
 cont()

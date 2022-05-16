@@ -169,7 +169,7 @@ def bot_vs_bot():
 
 
 surface = create_example_window('Cờ vua', (512, 512))
-
+surface.
 
 def set_mode(selected: Tuple, value=0) -> None:
     global is_human
